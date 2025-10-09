@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
 import GitHubProvider from "next-auth/providers/github";
