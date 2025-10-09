@@ -1,0 +1,40 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  image     String?
+  createdAt DateTime @default(now())
+  sites     Site[]
+  scans     Scan[]
+}
+
+model Site {
+  id        String   @id @default(cuid())
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  domain    String
+  createdAt DateTime @default(now())
+  scans     Scan[]
+}
+
+model Scan {
+  id         String    @id @default(cuid())
+  siteId     String
+  site       Site      @relation(fields: [siteId], references: [id])
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  result     Json
+  grade      String?
+  User       User?     @relation(fields: [userId], references: [id])
+  userId     String?
+}
